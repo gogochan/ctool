@@ -1,5 +1,6 @@
 import urllib3
 import progressbar
+from typing import List
 
 from elasticsearch import Elasticsearch
 
@@ -32,7 +33,8 @@ def walk_data(client:Elasticsearch, index: str, chunk_size: int, show_progress: 
         return _generator(_resp)
 
 
-def get_client(host, **kwargs) -> Elasticsearch:
+def client_factory(host, **kwargs) -> Elasticsearch:
+    """Get Elasticsearch client."""
     common_args = {"hosts": [host], "verify_certs": False, "ssl_show_warn": False}
 
     if "username" in kwargs and "password" in kwargs:
@@ -42,12 +44,12 @@ def get_client(host, **kwargs) -> Elasticsearch:
     raise ValueError("Either username/password or api_key must be provided")
 
 
-def get_all_indices(client:Elasticsearch) -> [str]:
+def get_all_indices(client:Elasticsearch) -> List[str]:
     """Get all indices from Elasticsearch."""
     resp = client.indices.get_alias()
     return resp.keys()
 
-def get_all_data_streams(client:Elasticsearch) -> [str]:
+def get_all_data_streams(client:Elasticsearch) -> List[str]:
     """Get all data_streams from Elasticsearch."""
     resp = client.indices.get_data_stream()
     return [val["name"] for val in resp.body["data_streams"]]
