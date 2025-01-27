@@ -2,6 +2,7 @@
 A simple tool for dumping and inspecting Elasticsearch data.
 
 ### es
+A set of command related to Elasticsearch.
 
 ### dump
 ```
