@@ -33,8 +33,21 @@ def walk_data(client:Elasticsearch, index: str, chunk_size: int, show_progress: 
 
 
 def get_client(host, **kwargs) -> Elasticsearch:
+    common_args = {"hosts": [host], "verify_certs": False, "ssl_show_warn": False}
+
     if "username" in kwargs and "password" in kwargs:
-       return Elasticsearch(hosts=[host], basic_auth=(kwargs.get("username"), kwargs.get("password")), verify_certs=False)
+       return Elasticsearch(basic_auth=(kwargs.get("username"), kwargs.get("password")), **common_args)
     elif "api_key" in kwargs:
-       return Elasticsearch(hosts=[host], api_key=kwargs.get("api_key"), verify_certs=False) 
+       return Elasticsearch(api_key=kwargs.get("api_key"), **common_args)
     raise ValueError("Either username/password or api_key must be provided")
+
+
+def get_all_indices(client:Elasticsearch) -> [str]:
+    """Get all indices from Elasticsearch."""
+    resp = client.indices.get_alias()
+    return resp.keys()
+
+def get_all_data_streams(client:Elasticsearch) -> [str]:
+    """Get all data_streams from Elasticsearch."""
+    resp = client.indices.get_data_stream()
+    return [val["name"] for val in resp.body["data_streams"]]
