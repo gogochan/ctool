@@ -48,7 +48,7 @@ Usage: ctool es compare [OPTIONS] LEFT RIGHT
 
   Compare two Elasticsearch index dump data stored in different directory.
 
-  For this to work, dump must have have been run with --checksum option.
+  For this to work, dump must have been run with --checksum option.
 
 Options:
   -h, --help  Show this message and exit.

@@ -5,7 +5,7 @@ import os
 import progressbar
 from progressbar.terminal.colors import green, red
 from ctool.es import  walk_data, client_factory, get_all_data_streams
-import hashlib
+from ctool.data import _progressive_write
 
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
@@ -32,14 +32,16 @@ def dump(host, username, password, api_key, indicies, chunk_size, target_folder,
 
     for index in indicies:
         click.echo(f"Processing index: {index}...")
-        buf = { doc["_id"]: doc["_source"] for doc in walk_data(client, index, chunk_size) }
 
-        with open(os.path.join(target_folder, f"{index}.json"), "w") as f:
-            json.dump(buf, f, indent=4)
+        _itr = walk_data(client, index, chunk_size)
 
         if store_checksum:
-            with open(os.path.join(target_folder, f"{index}-checksum.json"), "w") as f:
-                json.dump({k: hashlib.sha256(json.dumps(v).encode()).hexdigest() for k, v in buf.items()}, f)
+            with open(os.path.join(target_folder, f"{index}.json"), "w") as f, \
+                 open(os.path.join(target_folder, f"{index}-checksum.json"), "w") as f_checksum:
+                _progressive_write(_itr, f, f_checksum)
+        else:
+            with open(os.path.join(target_folder, f"{index}.json"), "w") as f:
+                _progressive_write(_itr, f)
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -48,7 +50,7 @@ def dump(host, username, password, api_key, indicies, chunk_size, target_folder,
 def compare(left, right):
     """Compare two Elasticsearch index dump data stored in different directory.
 
-    For this to work, dump must have have been run with --checksum option.
+    For this to work, dump must have been run with --checksum option.
     """
 
     click.echo(f"Comparing {left} and {right}...")
