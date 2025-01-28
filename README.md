@@ -89,3 +89,27 @@ Options:
 
 ```
 This command is meant to compare two dump results using hash.
+
+
+### load
+
+This command upload documents to Elasticsearch
+
+```
+Usage: ctool load [OPTIONS] DATA_FILES...
+
+  Load data into Elasticsearch.
+
+  The source_files must be in nsjson format.
+
+Options:
+  --host TEXT           Elasticsearch host
+  --username TEXT       Elasticsearch username
+  --password TEXT       Elasticsearch password  [required]
+  --api-key TEXT        Elasticsearch API key, if specified, will be used
+                        instead of username/password
+  --target TEXT         Elasticsearch index or data stream  [required]
+  --chunk-size INTEGER  Number of documents to download, default is 200
+  --pipeline TEXT       Elasticsearch ingest pipeline
+  -h, --help            Show this message and exit.
+```
