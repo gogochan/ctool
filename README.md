@@ -2,8 +2,20 @@
 A simple tool for dumping and inspecting Elasticsearch data.
 
 ### dump
+```
+ctool dump -h
+Usage: ctool dump [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  -h, --help  Show this message and exit.
+
+Commands:
+  datastream  Dump data streams from Elasticsearch to a folder.
+  index       Dump indices from Elasticsearch to a folder.
+```
+
 This subcommand has `index` and `datastream` subcommand for retrieving data from
-Elasticsearch. The usages are almost identical.
+Elasticsearch. The usage is almost identical.
 
 The user credentials can be specified using environment variables.
 
