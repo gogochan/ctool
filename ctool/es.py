@@ -1,9 +1,12 @@
 import urllib3
-import progressbar
+import warnings
 from typing import List
 
-from elasticsearch import Elasticsearch
+import progressbar
+from elasticsearch import Elasticsearch, ElasticsearchWarning
 
+# Suppress Elasticsearch warnigs
+warnings.filterwarnings("ignore", category=ElasticsearchWarning)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def walk_data(client:Elasticsearch, index: str, chunk_size: int, show_progress: bool = True):
@@ -25,7 +28,7 @@ def walk_data(client:Elasticsearch, index: str, chunk_size: int, show_progress: 
                 print(f"Error: {e}")
                 break
 
-    if show_progress:
+    if show_progress and _resp["hits"]["total"]["value"] > 0:
         return progressbar.progressbar(
             _generator(_resp),
             max_value=_resp["hits"]["total"]["value"])
