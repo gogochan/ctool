@@ -1,9 +1,11 @@
+import json
 import urllib3
 import warnings
-from typing import List
+from typing import List, Iterable
 
 import progressbar
 from elasticsearch import Elasticsearch, ElasticsearchWarning
+from elasticsearch.helpers import streaming_bulk
 
 # Suppress Elasticsearch warnigs
 warnings.filterwarnings("ignore", category=ElasticsearchWarning)
@@ -56,3 +58,16 @@ def get_all_data_streams(client:Elasticsearch) -> List[str]:
     """Get all data_streams from Elasticsearch."""
     resp = client.indices.get_data_stream()
     return [val["name"] for val in resp.body["data_streams"]]
+
+
+def bulk_index(client:Elasticsearch, index:str, data:Iterable[str], chunk_size:int=500, pipeline:str=None) -> Iterable:
+    """Index data into Elasticsearch."""
+    def _body():
+        for doc in data:
+            yield {
+                "_index": index,
+                "pipeline": pipeline if pipeline else None,
+                "_source": json.loads(doc.strip()),
+            }
+
+    return streaming_bulk(client, _body(), chunk_size=chunk_size)
