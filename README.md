@@ -1,6 +1,15 @@
 ## Overview
 A simple tool for dumping and inspecting Elasticsearch data.
 
+### Installation
+```
+git clone https://github.com/gogochan/ctool
+cd ctool
+python -m venv venv
+source venv/bin/activate
+pip install .
+```
+
 ### dump
 ```
 ctool dump -h
