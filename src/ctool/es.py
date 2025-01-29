@@ -14,11 +14,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def walk_data(client:Elasticsearch, index: str, chunk_size: int, show_progress: bool = True):
     """Dump data from indicies on Elasticsearch
     """
-    try:
-        _resp = client.search(index=index, body={"query": {"match_all": {}}, "size": chunk_size}, scroll='1m')
-
-    except Exception as e:
-        print(f"Error: {e}")
+    _resp = client.search(index=index, body={"query": {"match_all": {}}, "size": chunk_size}, scroll='1m')
 
     def _generator(resp):
         while len(resp['hits']['hits']) > 0:
