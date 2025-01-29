@@ -1,5 +1,6 @@
 import click
 import os
+from progressbar.terminal.colors import red
 from ctool.es import  walk_data, client_factory, get_all_data_streams, get_all_indices
 from ctool.data import _progressive_write
 from .context import CONTEXT_SETTINGS
@@ -13,7 +14,11 @@ def _dump_data(client, indices, chunk_size, target_folder, store_checksum):
     for index in indices:
         click.echo(f"Processing: {index}...")
 
-        _itr = walk_data(client, index, chunk_size)
+        try:
+            _itr = walk_data(client, index, chunk_size)
+        except Exception as e:
+            click.echo(red.fg(f"Error: {e}"))
+            continue
 
         if store_checksum:
             with open(os.path.join(target_folder, f"{index}.json"), "w") as f, \
