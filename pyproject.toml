@@ -1,6 +1,6 @@
 [project]
 name = "ctool"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = [
     {name = "Chan Kim",email = "5281995+gogochan@users.noreply.github.com"}

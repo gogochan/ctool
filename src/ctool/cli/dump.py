@@ -47,7 +47,7 @@ def index(host, username, password, api_key, indicies, chunk_size, target_folder
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option("--host", envvar="ELASTICSEARCH_HOST", default="localhost", help="Elasticsearch host")
 @click.option("--username", envvar="ELASTICSEARCH_USERNAME", default="elastic", help="Elasticsearch username")
-@click.option("--password", envvar="ELASTICSEARCH_PASSWORD", required=True, help="Elasticsearch password")
+@click.option("--password", envvar="ELASTICSEARCH_PASSWORD", help="Elasticsearch password")
 @click.option("--api-key", envvar="ELASTICSEARCH_API_KEY", help="Elasticsearch API key, if specified, will be used instead of username/password")
 @click.option("--data-stream", "data_streams", multiple=True, help="Elasticsearch data streams to dump, if not specified, the program will try all data_streams")
 @click.option("--chunk-size", default=200, help="Number of documents to download, default is 200")
