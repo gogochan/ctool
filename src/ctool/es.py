@@ -42,9 +42,9 @@ def client_factory(host, **kwargs) -> Elasticsearch:
     """Get Elasticsearch client."""
     common_args = {"hosts": [host], "verify_certs": False, "ssl_show_warn": False}
 
-    if "username" in kwargs and "password" in kwargs:
+    if kwargs.get("username") and kwargs.get("password"):
        return Elasticsearch(basic_auth=(kwargs.get("username"), kwargs.get("password")), **common_args)
-    elif "api_key" in kwargs:
+    elif kwargs.get("api_key"):
        return Elasticsearch(api_key=kwargs.get("api_key"), **common_args)
     raise ValueError("Either username/password or api_key must be provided")
 
