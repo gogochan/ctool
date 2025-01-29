@@ -10,7 +10,7 @@ from ctool.es import client_factory, bulk_index
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option("--host", envvar="ELASTICSEARCH_HOST", default="localhost", help="Elasticsearch host")
 @click.option("--username", envvar="ELASTICSEARCH_USERNAME", default="elastic", help="Elasticsearch username")
-@click.option("--password", envvar="ELASTICSEARCH_PASSWORD", required=True, help="Elasticsearch password")
+@click.option("--password", envvar="ELASTICSEARCH_PASSWORD", help="Elasticsearch password")
 @click.option("--api-key", envvar="ELASTICSEARCH_API_KEY", help="Elasticsearch API key, if specified, will be used instead of username/password")
 @click.option("--target", required=True, help="Elasticsearch index or data stream")
 @click.option("--chunk-size", default=500, help="Number of documents to download, default is 200")
