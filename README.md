@@ -122,3 +122,42 @@ Options:
   --pipeline TEXT       Elasticsearch ingest pipeline
   -h, --help            Show this message and exit.
 ```
+
+### analyze
+Anlayze provides additional functions for analying dump of Elasticsearch.
+```
+Usage: ctool analyze [OPTIONS] COMMAND [ARGS]...
+
+  Group of command dumping data from Elasticsearch to a folder.
+
+Options:
+  -h, --help  Show this message and exit.
+
+Commands:
+  duplicate  Walk through dump of Elasticsearch and report possible...
+```
+
+#### duplicate
+This command is used to detect duplicates. It does so by creating and
+comparing hashes of documents. By defaults, the tool ignores following
+attributes:
+- `event.id`
+- `event.created_at`
+- `event.updated_at`
+
+If any additional fields need to be excluded, use --exclude option.
+
+```
+Usage: ctool analyze duplicate [OPTIONS] TARGET_FOLDER
+
+  Walk through dump of Elasticsearch and report possible duplicates.
+
+  By default, the tool ignores event.id, event.created_at, and event.updated_at
+  fields.
+
+  If any additional fields need to be excluded, use --exclude option.
+
+Options:
+  --exclude TEXT  Additional fields to exclude when comparing
+  -h, --help      Show this message and exit.
+```
