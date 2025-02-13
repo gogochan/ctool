@@ -29,7 +29,7 @@ def del_attributes(doc: dict, dotted_exclude: str) -> dict:
 def duplicate(excludes: list[str], target_folder: str):
     """Walk through dump of Elasticsearch and report possible duplicates.
 
-    By default, the tool ignore event.id, event.created_at, and event.updated_at fields.
+    By default, the tool ignores event.id, event.created_at, and event.updated_at fields.
 
     If any additional fields need to be excluded, use --exclude option.
     """
